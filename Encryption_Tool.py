@@ -107,7 +107,7 @@ while True:
         
         print("Your encrypted message is: ")
         print(" ")
-        print(str(iv)+str(crypto(mes,1)))
+        print(str(iv)+str(crypto(fillup(mes),1)))
         print(" ")
         print("Please don't forget your password: " + str(key))
             
@@ -121,5 +121,5 @@ while True:
         print(" ")
         print("The decrypted message is: ")
         print(" ")
-        print(str(crypto(mes,2)))
+        print(str(short(crypto(fillup(mes),2))))
         print(" ")
