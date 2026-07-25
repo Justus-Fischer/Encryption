@@ -4,6 +4,6 @@ the projects inside are just learning projects and NOT SAFE enough for real pass
 
 it is possible that data cannot be decrypted
 
-It is recommended to execute the FileEncryptert in a separate folder
+It is recommended to execute the FileEncrypter in a separate folder
 
 older versions of the files in medium-sized-projects-/Encryption
