@@ -44,6 +44,7 @@ def seedgen(pasw):
     #print(time.time()-pr)
     return stes
 
+#do not forget iv
 def crypto(mes,mode):
     
     if mode == 1:
