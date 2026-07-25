@@ -1,9 +1,9 @@
 #just a demo 
 #Do not use for real passwords 
 
+import secrets
 import time
 import random
-import secrets
 import json
 import os
 
