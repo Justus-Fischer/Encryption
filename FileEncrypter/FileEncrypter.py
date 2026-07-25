@@ -32,3 +32,8 @@ while True:
         break
 
     print("")
+    print("Do you want to encrypt or decrypt these files?")
+    choice = input("(Encrypt/Decrypt/Exit): ").lower()
+    if "ex" in choice:
+        print("Have a nice day!")
+        break
