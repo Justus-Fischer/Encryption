@@ -2,6 +2,13 @@
 import random
 import secrets
 
+def fillup(password):
+    filledpassword = password.ljust(35,"\x00")
+    return filledpassword
+
+def short(password):
+    shortpassword = password.rstrip("\x00")
+    return shortpassword
 
 def bu(num):
     word = []
@@ -26,14 +33,16 @@ def zke(wert):
     return wert % 0x110000
 
 def seedgen(pasw):
+
     stes = 5381
-    
     bpasw = list(pasw)
-    
-    for i in range(len(bpasw)):
-        stes = int((stes * 33) + ord(bpasw[i]))
-        
-    return stes % (2**64)
+    #pr = time.time()
+    for r in range(600000):
+        for i in range(len(bpasw)):
+
+            stes = int(((stes * 33) + ord(bpasw[i]) + r) % (2 ** 256))
+    #print(time.time()-pr)
+    return stes
 
 def crypto(mes,mode):
     
