@@ -22,7 +22,7 @@ while True:
 
     files = files = [i for i in allentries if os.path.isfile(os.path.join(currentpath, i)) and i != "FileEncrypter.py"]
 
-    print("Welcome to FileEncrypter!")
+    print("Welcome to the File_Encrypter!")
     print("Currently active in " + currentpath)
     print("")
     print("The FileEncrypter found the following files in the current directory:")
