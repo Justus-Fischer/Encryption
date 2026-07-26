@@ -170,5 +170,8 @@ while True:
             with open(i, "rb") as file:
                 content = file.read().decode('utf-8')
 
-
-
+            with open(i, "wb") as file:
+                vers = crypto(content, 2, 0)
+                file.write(bytes.fromhex(vers))
+            print("File " + i + " has been decrypted.")
+        print("All done!")
