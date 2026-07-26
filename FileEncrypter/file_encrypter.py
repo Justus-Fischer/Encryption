@@ -3,6 +3,7 @@
 import os
 import random
 import secrets
+import json
 
 
 def bu(num):
@@ -57,10 +58,10 @@ def crypto(mes, mode, iv):
             bmes[i] = ord(bmes[i])
             try:
                 if i > 0:
-                    bmes[i] = chr(zkv(bmes[i] + random.randint(100, 100000) - ord(bmes[i - 1]) * 10))
+                    bmes[i] = chr(zkv((bmes[i] + random.randint(100, 100000) - ord(bmes[i - 1]) * 10)%256))
 
                 else:
-                    bmes[i] = chr(zkv(bmes[i] + random.randint(100, 100000) * iv))
+                    bmes[i] = chr(zkv((bmes[i] + random.randint(100, 100000) * iv)%256))
 
             except:
                 print("unexpected error")
@@ -75,10 +76,10 @@ def crypto(mes, mode, iv):
             bmes[i] = ord(bmes[i])
             try:
                 if i > 0:
-                    bmes[i] = chr(zke(bmes[i] - random.randint(100, 100000) + ord(cbmes[i - 1]) * 10))
+                    bmes[i] = chr(zke((bmes[i] - random.randint(100, 100000) + ord(cbmes[i - 1]) * 10)%256))
 
                 else:
-                    bmes[i] = chr(zke(bmes[i] - random.randint(100, 100000) * int(ivT)))
+                    bmes[i] = chr(zke((bmes[i] - random.randint(100, 100000) * int(ivT))%256))
 
             except:
                 print("invalid password")
@@ -141,11 +142,14 @@ while True:
         for i in files:
             with open(i, "rb") as file:
                 content = file.read().hex()
+                print(content)
                 iv = secrets.randbelow(900000) + 100000
 
-            with open(i, "wb") as file:
-                vers = str(iv) + crypto(content, 1, iv)
-                file.write(vers.encode('utf-8'))
+
+            with open((i+".txt"), "w", encoding="utf-8") as file:
+                vers = str(iv) + str(crypto(content, 1, iv))
+                #print(vers)
+                json.dump(vers, file)
 
             print("File " + i + " has been encrypted.")
         print("All done!")
@@ -166,11 +170,15 @@ while True:
         seedgen(key)
 
         for i in files:
-            with open(i, "rb") as file:
-                content = file.read().decode('utf-8')
+            with open((i+".txt"), "r", encoding="utf-8") as file:
+                vers = json.load(file)
 
-            with open(i, "wb") as file:
-                vers = crypto(content, 2, 0)
-                file.write(bytes.fromhex(vers))
+            vers = crypto(vers, 2, 0)
+            print(vers)
+
+
+            with open(i.replace(".txt", ""), "wb") as file:
+                file.write(vers)
+
             print("File " + i + " has been decrypted.")
         print("All done!")
