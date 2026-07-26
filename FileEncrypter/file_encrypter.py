@@ -1,7 +1,7 @@
 #JUST A DEMO - DO NOT USE FOR REAL SENSITIVE DATA!
 
-import json
 import os
+
 
 print("JUST A DEMO - DO NOT USE FOR REAL SENSITIVE DATA!")
 print("It is possible that data cannot be decrypted")
@@ -20,7 +20,7 @@ while True:
 
     allentries = os.listdir(currentpath)
 
-    files = files = [i for i in allentries if os.path.isfile(os.path.join(currentpath, i)) and i != "file_encrypter.py"]
+    files = [i for i in allentries if os.path.isfile(os.path.join(currentpath, i)) and i != "file_encrypter.py"]
 
     print("Welcome to the File_Encrypter!")
     print("Currently active in " + currentpath)
@@ -43,3 +43,18 @@ while True:
     if "ex" in choice:
         print("Have a nice day!")
         break
+
+    if "enc" in choice:
+        print("Note: The files will be encrypted and the original files will be deleted.")
+        key = input("Please enter a password (or exit): ")
+        if key == "exit":
+            print("Have a nice day!")
+            break
+        for i in files:
+            with open(i, "rb") as file:
+                content = file.read().hex()
+                print(bytes.fromhex(content).decode('utf-8'))
+
+                with open(i, "wb") as file:
+                    file.write(bytes.fromhex(content))
+
