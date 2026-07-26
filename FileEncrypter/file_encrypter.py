@@ -141,7 +141,6 @@ while True:
         for i in files:
             with open(i, "rb") as file:
                 content = file.read().hex()
-                #print(bytes.fromhex(content).decode('utf-8'))
                 iv = secrets.randbelow(900000) + 100000
 
             with open(i, "wb") as file:
