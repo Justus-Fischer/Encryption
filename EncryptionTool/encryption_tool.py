@@ -45,7 +45,7 @@ def seedgen(pasw):
     return stes
 
 #do not forget iv
-def crypto(mes,mode):
+def crypto(mes,mode,iv):
     
     if mode == 1:
         bmes = list(mes) 
@@ -54,10 +54,11 @@ def crypto(mes,mode):
             bmes[i] = ord(bmes[i])
             try:
                 if i > 0:
-                    bmes[i] = chr(zkv(bmes[i] + random.randint(100, 100000) - ord(bmes[i-1])*10)%256)
-                    
+                    bmes[i] = chr(zkv(bmes[i] + random.randint(100, 100000) - ord(bmes[i - 1]) * 10))
+
+
                 else:
-                    bmes[i] = chr(zkv(bmes[i] + random.randint(100, 100000)*iv)%256)
+                    bmes[i] = chr(zkv(bmes[i] + random.randint(100, 100000)*iv))
                     
             except:
                 print("unexpected error")
@@ -72,10 +73,10 @@ def crypto(mes,mode):
             bmes[i] = ord(bmes[i])
             try:
                 if i > 0:
-                    bmes[i] = chr(zke(bmes[i] - random.randint(100, 100000) + ord(cbmes[i-1])*10)%256)
+                    bmes[i] = chr(zke(bmes[i] - random.randint(100, 100000) + ord(cbmes[i-1])*10))
                     
                 else:
-                    bmes[i] = chr(zke(bmes[i] - random.randint(100, 100000)*int(ivT))%256)
+                    bmes[i] = chr(zke(bmes[i] - random.randint(100, 100000)*int(ivT)))
                     
             except:
                 print("invalid password")
@@ -108,7 +109,7 @@ while True:
         
         print("Your encrypted message is: ")
         print(" ")
-        print(str(iv)+str(crypto(fillup(mes),1)))
+        print(str(iv)+str(crypto(fillup(mes),1,iv)))
         print(" ")
         print("Please don't forget your password: " + str(key))
             
@@ -122,5 +123,5 @@ while True:
         print(" ")
         print("The decrypted message is: ")
         print(" ")
-        print(str(short(crypto(fillup(mes),2))))
+        print(str(short(crypto(fillup(mes),2,0))))
         print(" ")
