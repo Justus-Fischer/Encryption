@@ -54,10 +54,10 @@ def crypto(mes,mode):
             bmes[i] = ord(bmes[i])
             try:
                 if i > 0:
-                    bmes[i] = chr(zkv(bmes[i] + random.randint(100, 100000) - ord(bmes[i-1])*10))
+                    bmes[i] = chr(zkv(bmes[i] + random.randint(100, 100000) - ord(bmes[i-1])*10)%256)
                     
                 else:
-                    bmes[i] = chr(zkv(bmes[i] + random.randint(100, 100000)*iv))
+                    bmes[i] = chr(zkv(bmes[i] + random.randint(100, 100000)*iv)%256)
                     
             except:
                 print("unexpected error")
@@ -72,10 +72,10 @@ def crypto(mes,mode):
             bmes[i] = ord(bmes[i])
             try:
                 if i > 0:
-                    bmes[i] = chr(zke(bmes[i] - random.randint(100, 100000) + ord(cbmes[i-1])*10))
+                    bmes[i] = chr(zke(bmes[i] - random.randint(100, 100000) + ord(cbmes[i-1])*10)%256)
                     
                 else:
-                    bmes[i] = chr(zke(bmes[i] - random.randint(100, 100000)*int(ivT)))
+                    bmes[i] = chr(zke(bmes[i] - random.randint(100, 100000)*int(ivT))%256)
                     
             except:
                 print("invalid password")
