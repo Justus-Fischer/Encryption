@@ -20,7 +20,7 @@ while True:
 
     allentries = os.listdir(currentpath)
 
-    files = files = [i for i in allentries if os.path.isfile(os.path.join(currentpath, i)) and i != "FileEncrypter.py"]
+    files = files = [i for i in allentries if os.path.isfile(os.path.join(currentpath, i)) and i != "file_encrypter.py"]
 
     print("Welcome to the File_Encrypter!")
     print("Currently active in " + currentpath)
