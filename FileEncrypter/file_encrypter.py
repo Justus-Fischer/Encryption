@@ -67,7 +67,7 @@ def crypto(mes, mode, iv):
                 break
     else:
         ivT = mes[:6]
-        re = geheimtext = mes[6:]
+        re = mes[6:]
         bmes = list(re)
         cbmes = list(re)
         random.seed(seedgen(key) + int(ivT))
@@ -131,7 +131,7 @@ while True:
         break
 
     if "enc" in choice:
-        print("Note: The files will be encrypted and the original files will be deleted.")
+        print("Note: The files will be encrypted and the original files will be overwritten.")
         key = input("Please enter a password (or exit): ")
         if key == "exit":
             print("Have a nice day!")
@@ -150,3 +150,25 @@ while True:
 
             print("File " + i + " has been encrypted.")
         print("All done!")
+        print(" ")
+        print("Do you want to continue or exit?")
+        choice = input("(continue/exit): ").lower()
+        if "ex" in choice:
+            print("Have a nice day!")
+            break
+        print(" ")
+        stes = 15
+
+    if "dec" in choice:
+        key = input("Please enter your password (or exit): ")
+        if key == "exit":
+            print("Have a nice day!")
+            break
+        seedgen(key)
+
+        for i in files:
+            with open(i, "rb") as file:
+                content = file.read().decode('utf-8')
+
+
+

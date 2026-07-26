@@ -63,7 +63,7 @@ def crypto(mes, mode):
                 break
     else:
         ivT = mes[:6]
-        re = geheimtext = mes[6:]
+        re  = mes[6:]
         bmes = list(re)
         cbmes = list(re)
         random.seed(seedgen(key) + int(ivT))
