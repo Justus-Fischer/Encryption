@@ -2,6 +2,8 @@
 
 import os
 import random
+import secrets
+
 
 def bu(num):
     word = []
@@ -28,19 +30,26 @@ def zke(wert):
     return wert % 0x110000
 
 
+stes = 15
 def seedgen(pasw):
+    global stes
+    if stes != 15:
+
+        return stes
+
     stes = 5381
     bpasw = list(pasw)
-    # pr = time.time()
+
     for r in range(600000):
         for i in range(len(bpasw)):
+
             stes = int(((stes * 33) + ord(bpasw[i]) + r) % (2 ** 256))
-    # print(time.time()-pr)
+
     return stes
 
 
 # do not forget iv
-def crypto(mes, mode):
+def crypto(mes, mode, iv):
     if mode == 1:
         bmes = list(mes)
         random.seed(seedgen(key) + iv)
@@ -127,11 +136,17 @@ while True:
         if key == "exit":
             print("Have a nice day!")
             break
+        seedgen(key)
+
         for i in files:
             with open(i, "rb") as file:
                 content = file.read().hex()
-                print(bytes.fromhex(content).decode('utf-8'))
+                #print(bytes.fromhex(content).decode('utf-8'))
+                iv = secrets.randbelow(900000) + 100000
 
-                with open(i, "wb") as file:
-                    file.write(bytes.fromhex(content))
+            with open(i, "wb") as file:
+                vers = str(iv) + crypto(content, 1, iv)
+                file.write(vers.encode('utf-8'))
 
+            print("File " + i + " has been encrypted.")
+        print("All done!")
