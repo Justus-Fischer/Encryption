@@ -17,20 +17,6 @@ def bu(num):
     return "".join(word)
 
 
-def zkv(wert):
-    wert = wert % 0x110000
-    if 0xD800 <= wert <= 0xDFFF:
-        wert = wert + 2048
-    return wert
-
-
-def zke(wert):
-    wert = wert % 0x110000
-    if 0xD800 <= wert <= 0xDFFF:
-        wert = wert - 2048
-    return wert % 0x110000
-
-
 stes = 15
 def seedgen(pasw):
     global stes
@@ -52,16 +38,16 @@ def seedgen(pasw):
 # do not forget iv
 def crypto(mes, mode, iv):
     if mode == 1:
-        bmes = list(mes)
+        bmes = [ord(c) for c in mes]
         random.seed(seedgen(key) + iv)
         for i in range(len(bmes)):
-            bmes[i] = ord(bmes[i])
+
             try:
                 if i > 0:
-                    bmes[i] = chr(zkv((bmes[i] + random.randint(100, 100000) - ord(bmes[i - 1]) * 10)%256))
+                    bmes[i] = (bmes[i] + random.randint(100, 100000) - bmes[i - 1] * 10) % 256
 
                 else:
-                    bmes[i] = chr(zkv((bmes[i] + random.randint(100, 100000) * iv)%256))
+                    bmes[i] = (bmes[i] + random.randint(100, 100000) * iv) % 256
 
             except:
                 print("unexpected error")
@@ -69,23 +55,23 @@ def crypto(mes, mode, iv):
     else:
         ivT = mes[:6]
         re = mes[6:]
-        bmes = list(re)
-        cbmes = list(re)
+        bmes = [ord(c) for c in re]
+        cbmes = list(bmes)
         random.seed(seedgen(key) + int(ivT))
         for i in range(len(bmes)):
-            bmes[i] = ord(bmes[i])
+
             try:
                 if i > 0:
-                    bmes[i] = chr(zke((bmes[i] - random.randint(100, 100000) + ord(cbmes[i - 1]) * 10)%256))
+                    bmes[i] = (bmes[i] - random.randint(100, 100000) + cbmes[i - 1] * 10) % 256
 
                 else:
-                    bmes[i] = chr(zke((bmes[i] - random.randint(100, 100000) * int(ivT))%256))
+                    bmes[i] = (bmes[i] - random.randint(100, 100000) * int(ivT)) % 256
 
             except:
                 print("invalid password")
                 break
     try:
-        return "".join(bmes)
+        return bytes(bmes)
     except:
         print("Please try again")
 
@@ -142,14 +128,20 @@ while True:
         for i in files:
             with open(i, "rb") as file:
                 content = file.read().hex()
-                print(content)
+                #print(content)
                 iv = secrets.randbelow(900000) + 100000
 
 
-            with open((i+".txt"), "w", encoding="utf-8") as file:
-                vers = str(iv) + str(crypto(content, 1, iv))
+            with open((i), "r+b") as file:
+
+                vers = str(iv).encode('utf-8') + crypto(content, 1, iv)
                 #print(vers)
-                json.dump(vers, file)
+
+                file.seek(0)
+                file.write(vers)
+                file.truncate()
+                file.flush()
+                os.fsync(file.fileno())
 
             print("File " + i + " has been encrypted.")
         print("All done!")
@@ -160,7 +152,7 @@ while True:
             print("Have a nice day!")
             break
         print(" ")
-        stes = 15
+    stes = 15
 
     if "dec" in choice:
         key = input("Please enter your password (or exit): ")
@@ -170,15 +162,20 @@ while True:
         seedgen(key)
 
         for i in files:
-            with open((i+".txt"), "r", encoding="utf-8") as file:
-                vers = json.load(file)
+            with open(i, "rb")as file:
+                vers = file.read()
+
+            vers = vers.decode('latin-1')
+
+            #print(vers)
 
             vers = crypto(vers, 2, 0)
-            print(vers)
 
-
-            with open(i.replace(".txt", ""), "wb") as file:
-                file.write(vers)
+            #with open(i.replace(".txt", ""), "wb") as file:
+            with open(i, "wb") as file:
+                file.write(bytes.fromhex(vers.decode('utf-8')))
 
             print("File " + i + " has been decrypted.")
+
+        stes = 15
         print("All done!")
