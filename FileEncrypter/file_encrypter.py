@@ -145,6 +145,7 @@ while True:
             print("File " + i + " has been encrypted.")
         print("All done!")
         print(" ")
+        time.sleep(4)
         print("Do you want to continue or exit?")
         choice = input("(continue/exit): ").lower()
         if "ex" in choice:
@@ -152,6 +153,7 @@ while True:
             break
         print(" ")
     stes = 15
+
 
     if "dec" in choice:
         f = False
@@ -197,3 +199,6 @@ while True:
             print("But there were some errors.")
             print(" ")
             f = False
+        time.sleep(4)
+
+print("Programm closed")
