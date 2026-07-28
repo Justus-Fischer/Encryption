@@ -3,8 +3,7 @@
 import os
 import random
 import secrets
-import json
-
+import time
 
 def bu(num):
     word = []
@@ -155,6 +154,7 @@ while True:
     stes = 15
 
     if "dec" in choice:
+        f = False
         key = input("Please enter your password (or exit): ")
         if key == "exit":
             print("Have a nice day!")
@@ -168,14 +168,32 @@ while True:
             vers = vers.decode('latin-1')
 
             #print(vers)
+            try:
+                vers = crypto(vers, 2, 0)
 
-            vers = crypto(vers, 2, 0)
+            except:
+                print("Error: Maybe " + i + " is not encrypted.")
+                f = True
+                continue
 
-            #with open(i.replace(".txt", ""), "wb") as file:
+            try:
+                test = bytes.fromhex(vers.decode('utf-8'))
+
+
+            except ValueError:
+                print("Error: Maybe wrong password for file " + i)
+                f = True
+                continue
+
+
             with open(i, "wb") as file:
-                file.write(bytes.fromhex(vers.decode('utf-8')))
+                file.write(test)
 
             print("File " + i + " has been decrypted.")
 
         stes = 15
         print("All done!")
+        if f == True:
+            print("But there were some errors.")
+            print(" ")
+            f = False
